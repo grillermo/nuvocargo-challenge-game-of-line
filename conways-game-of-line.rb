@@ -135,6 +135,10 @@ def test(function_name)
       expected: NEXT_GENERATION_BLINKER,
     },
     {
+      input: NEXT_GENERATION_BLINKER,
+      expected: BLINKER,
+    },
+    {
       input: TOAD,
       expected: NEXT_GENERATION_TOAD,
     },
