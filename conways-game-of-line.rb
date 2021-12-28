@@ -59,7 +59,7 @@ def test(function_name)
     puts "\nTrying new input:"
     pp input
     expected = example[:expected]
-    result   = conways_game_of_line(input)
+    result   = conways_game_of_life(input)
     valid    = result == expected
 
     if valid
@@ -77,4 +77,4 @@ def test(function_name)
 end
 
 $debug = false
-test :conways_game_of_line
+test :conways_game_of_life
