@@ -41,6 +41,7 @@ NEXT_GENERATION_TOAD = [
   [_,_,x,_,_,_],
   [_,_,_,_,_,_],
 ]
+
 def test(function_name)
   examples = [
     {
@@ -55,17 +56,22 @@ def test(function_name)
 
   examples.each do |example|
     input    = example[:input]
-    puts "\nTrying new input: #{input}"
+    puts "\nTrying new input:"
+    pp input
     expected = example[:expected]
-    result   = conways_game_of_line(*input)
+    result   = conways_game_of_line(input)
     valid    = result == expected
 
     if valid
       puts "SUCCESS"
-      puts "was the expected #{expected}"
+      puts "was the expected"
+      pp expected
     else
       puts "FAIL"
-      puts "is expected to be #{expected} but it was #{result}"
+      puts "is expected to be #{expected} "
+      pp expected
+      puts "but it was "
+      pp result
     end
   end
 end
