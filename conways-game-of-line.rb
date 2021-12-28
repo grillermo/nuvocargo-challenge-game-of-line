@@ -1,9 +1,95 @@
-def conways_game_of_line(seed, generations)
+class LifeSimulator
+  def initialize(seed)
+    @seed = seed
+  end
+
+  def cell_status(height, position, row_index, column_index)
+    case height
+    when :top
+      row_index -= 1
+    when :bottom
+      row_index += 1
+    end
+
+    case position
+    when :left
+      column_index -= 1
+    when :right
+      column_index += 1
+    end
+      
+    # Out of the bounds of our universe
+    if row_index < 0 || (row_index + 1 > @seed.length)
+      return :dead
+    end
+
+    # Out of the bounds of our universe
+    if column_index < 0 || (column_index + 1 > @seed.length)
+      return :dead
+    end
+
+    @seed[row_index][column_index]
+  end
+
+  def get_neighbours(cell, row_index, column_index)
+    statuses = []
+
+    [
+      [:top,    :left], [:top,    :center], [:top, :right],
+      [:middle, :left],                     [:middle, :right],
+      [:bottom, :left], [:bottom, :center], [:bottom, :right],
+    ].each do |height, position|
+      statuses << cell_status(height, position, row_index, column_index)
+    end
+
+    statuses.tally
+  end
+
+  # Rule 1. Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+  # Rule 2. Any live cell with two or three live neighbours lives on to the next generation.
+  # Rule 3. Any live cell with more than three live neighbours dies, as if by overpopulation.
+  # Rule 4. 4ny dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+  def next_generation
+    # If only we had ActiveSupport deep_dup we wouldnt need to do this
+    @next_universe = Marshal.load(Marshal.dump(@seed))
+
+    @seed.each_with_index do |row, row_index|
+      row.each_with_index do |cell, column_index|
+        neighbours = get_neighbours(cell, row_index, column_index)  
+
+        alive_neighbours = neighbours[:alive] || 0
+
+        if cell == :alive
+          if alive_neighbours < 2
+            # Rule 1
+             cell = :dead
+          elsif alive_neighbours == 2 || alive_neighbours == 3
+            # Rule 2
+            cell = :alive
+          elsif alive_neighbours > 3
+            # Rule 3
+            cell = :dead
+          end
+        else
+          # Rule 4
+          if alive_neighbours == 3
+            cell = :alive
+          end
+        end
+
+        @next_universe[row_index][column_index] = cell
+      end
+    end
+
+    @next_universe
+  end
 end
 
-_ = :dead_cell
-x = :alive_cell
+def conways_game_of_life(seed)
+  simulator = LifeSimulator.new(seed)
 
+  simulator.next_generation
+end
 
 _ = :dead
 x = :alive
