@@ -4,6 +4,11 @@ end
 _ = :dead_cell
 x = :alive_cell
 
+
+_ = :dead
+x = :alive
+
+# Try with some wikipedia examples
 BLINKER = [
     [_,_,_,_,_],
     [_,_,x,_,_],
@@ -11,20 +16,40 @@ BLINKER = [
     [_,_,x,_,_],
     [_,_,_,_,_],
 ]
-
-SECOND_GENERATION_BLINKER = [
+NEXT_GENERATION_BLINKER = [
     [_,_,_,_,_],
     [_,_,_,_,_],
     [_,x,x,x,_],
     [_,_,_,_,_],
     [_,_,_,_,_],
 ]
+
+TOAD = [
+  [_,_,_,_,_,_],
+  [_,_,_,_,_,_],
+  [_,_,x,x,x,_],
+  [_,x,x,x,_,_],
+  [_,_,_,_,_,_],
+  [_,_,_,_,_,_],
+]
+
+NEXT_GENERATION_TOAD = [
+  [_,_,_,_,_,_],
+  [_,_,_,x,_,_],
+  [_,x,_,_,x,_],
+  [_,x,_,_,x,_],
+  [_,_,x,_,_,_],
+  [_,_,_,_,_,_],
+]
 def test(function_name)
-  $debug = true
   examples = [
     {
-      input: [BLINKER, 1],
-      expected: SECOND_GENERATION_BLINKER,
+      input: BLINKER,
+      expected: NEXT_GENERATION_BLINKER,
+    },
+    {
+      input: TOAD,
+      expected: NEXT_GENERATION_TOAD,
     },
   ]
 
@@ -45,4 +70,5 @@ def test(function_name)
   end
 end
 
+$debug = false
 test :conways_game_of_line
